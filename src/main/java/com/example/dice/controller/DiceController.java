@@ -2,15 +2,16 @@ package com.example.dice.controller;
 
 import com.example.dice.model.Dice;
 import com.example.dice.service.DiceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.time.Instant;
+
 
 @RestController
+@Slf4j
 public class DiceController {
     private final DiceService diceService;
 
@@ -18,20 +19,14 @@ public class DiceController {
         this.diceService = diceService;
     }
 
-    @GetMapping
-    public Map<String, String> home() {
-        Map<String, String> endpoints = new HashMap<>();
-        endpoints.put("health", "http://localhost:8080/health");
-        endpoints.put("healthfailure", "http://localhost:8080/healthfailure");
-        endpoints.put("dice", "http://localhost:8080/dice");
-        endpoints.put("counter", "http://localhost:8080/counter");
-        return endpoints;
-    }
-
 
     @GetMapping("/health")
     public ResponseEntity<String> health() {
-        return ResponseEntity.ok("Service is healthy");
+        if (diceService.isHealthy()) {
+            return ResponseEntity.ok("Service is healthy");
+        } else {
+            return ResponseEntity.status(500).body("Service not ready");
+        }
     }
 
     @GetMapping("/healthfailure")
@@ -40,8 +35,10 @@ public class DiceController {
     }
 
     @GetMapping("/dice")
-    public Dice rollDice() {
-        return diceService.rollDice();
+    public String rollDice() {
+        Dice dice = diceService.rollDice();
+        log.info("Roll Dice: {}", dice);
+        return "Dice thrown at " + dice.getId() + " with number: " + dice.getNumber();
     }
 
     @GetMapping("/counter")

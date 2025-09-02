@@ -4,6 +4,7 @@ import com.example.dice.model.Dice;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +28,6 @@ public class DiceService {
         long id = System.currentTimeMillis();
         rollCounter.incrementAndGet();
         diceRollsMetric.increment();
-
         return Dice.builder().id(id).number(number).build();
     }
 
@@ -36,6 +36,7 @@ public class DiceService {
     }
 
     public boolean isHealthy() {
-        return true;
+        File logDir = new File("application.log");
+        return logDir.exists() && logDir.canWrite();
     }
 }

@@ -38,8 +38,8 @@ jobs:
       - name: Build & Tag Docker image
         run: |
           docker build -t docker-dice -f Dockerfile .
-          docker tag docker-dice us-central1-docker.pkg.dev/maximal-totem-469711-d7/practice:${TAG}
+          docker tag docker-dice us-central1-docker.pkg.dev/maximal-totem-469711-d7/practice/dice:${TAG}
 
       - name: Push Docker image
         run: |
-          docker push us-central1-docker.pkg.dev/maximal-totem-469711-d7/practice:${TAG}
+          docker push us-central1-docker.pkg.dev/maximal-totem-469711-d7/practice/dice:${TAG}

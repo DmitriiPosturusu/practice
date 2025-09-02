@@ -29,6 +29,8 @@ WORKDIR /app
 #
 #USER spring:spring
 
+RUN chgrp -R 0 /var/log && chmod -R g=u /var/log
+
 COPY --from=builder /app/target/*.jar app.jar
 
 ENTRYPOINT ["java","-jar","/app/app.jar"]

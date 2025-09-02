@@ -36,7 +36,7 @@ public class DiceService {
     }
 
     public boolean isHealthy() {
-        File logDir = new File("application.log");
+        File logDir = new File("/var/log/dice/application.log");
         return logDir.exists() && logDir.canWrite();
     }
 }

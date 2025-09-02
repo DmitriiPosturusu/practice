@@ -23,9 +23,14 @@ RUN mvn test
 # Runtime
 FROM eclipse-temurin:17-jre-jammy AS runtime
 WORKDIR /app
+
 RUN addgroup --system spring && adduser --system spring --ingroup spring
-RUN mkdir -p /var/log/dice && touch /var/log/dice/application.log && chown -R spring:spring /var/log/dice
+
+RUN mkdir -p /var/log/dice && chown -R spring:spring /var/log/dice
+
 USER spring:spring
+
 COPY --from=builder /app/target/*.jar app.jar
+
 ENTRYPOINT ["java","-jar","/app/app.jar"]
 

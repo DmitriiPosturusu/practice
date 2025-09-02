@@ -25,9 +25,9 @@ FROM eclipse-temurin:17-jre-alpine AS runtime
 
 WORKDIR /app
 
-RUN addgroup --system spring && adduser --system spring --ingroup spring && mkdir -p /var/log/dice && touch /var/log/dice/application.log && chown -R spring:spring /var/log/dice
-
-USER spring:spring
+#RUN addgroup --system spring && adduser --system spring --ingroup spring && mkdir -p /var/log/dice && touch /var/log/dice/application.log && chown -R spring:spring /var/log/dice
+#
+#USER spring:spring
 
 COPY --from=builder /app/target/*.jar app.jar
 

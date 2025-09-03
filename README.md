@@ -142,10 +142,10 @@ The application is deployed in the `dev` namespace with the following configurat
 
 ## **8. Notes & Key Points**
 
-* Fully containerized and orchestrated with Kubernetes
-* Real-time log streaming via sidecar container
-* CI pipeline builds, tests, and pushes images to **GCP Artifact Registry**
-* Observability implemented using Prometheus, Grafana, and K8s dashboards
+* Application built with Spring Boot, containerized with Docker (multi-stage builds), and deployed on Kubernetes (GKE free tier)
+* CI Pipeline builds, tests, and pushes images to GCP Artifact Registry
+* Kubernetes deployment includes Deployment, Service, Ingress, sidecar logging, probes, and resource limits
+* Observability implemented using Prometheus and Grafana, with dashboards for K8s, ServiceMonitor, and custom metrics, installed via Helm
 * External access available via Ingress at `http://34.8.58.112/`
 * Designed for **DevOps demonstration**, easy to scale, monitor, and maintain
 

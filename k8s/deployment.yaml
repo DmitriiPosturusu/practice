@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dice-app
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dice-app
+  template:
+    metadata:
+      labels:
+        app: dice-app
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: dice-app
+          image: us-central1-docker.pkg.dev/maximal-totem-469711-d7/practice/dice:git_afeac
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          volumeMounts:
+            - name: dice-logs
+              mountPath: /var/log/dice
+        - name: log-streamer
+          image: busybox
+          command: ["sh", "-c", "tail -F /var/log/dice/application.log"]
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "test -f /var/log/dice/application.log"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: dice-logs
+              mountPath: /var/log/dice
+      volumes:
+        - name: dice-logs
+          emptyDir: {}

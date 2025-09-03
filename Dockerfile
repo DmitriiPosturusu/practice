@@ -24,7 +24,7 @@ RUN mvn test
 FROM eclipse-temurin:17-jre-jammy AS runtime
 WORKDIR /app
 
-RUN addgroup --system spring && adduser --system spring --ingroup spring && mkdir -p /var/log/dice && chown -R spring:spring /var/log/dice
+RUN addgroup spring && adduser spring --ingroup spring && mkdir -p /var/log/dice && chown -R spring:spring /var/log/dice
 
 USER spring:spring
 
